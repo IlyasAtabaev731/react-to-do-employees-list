@@ -11,7 +11,7 @@ class EmployeesAddForm extends Component{
     }
     onValueChange = (e) => {
         this.setState(() => ({
-            [e.target.name]: e.target.value
+           [e.target.name]: e.target.value
         }) )
     }
     onSubmit = (e) => {
@@ -20,8 +20,9 @@ class EmployeesAddForm extends Component{
         this.setState(() => ({
             name: '',
             salary: ''
-        }) )
+        }) );
     }
+
 
     render() {
         const {name, salary} = this.state;
