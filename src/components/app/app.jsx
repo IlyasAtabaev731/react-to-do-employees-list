@@ -63,9 +63,18 @@ class App extends Component {
     searchEmployees = (data, term) => {
         return (term.length > 0) ? data.filter(item => item.name.toLowerCase().indexOf(term.toLowerCase()) > -1) : data;
     }
+
     visibleDataCreate = (data, term) => {
-        return this.searchEmployees((this.state.filterOption === 0) ? data : (this.state.filterOption === 1) ? data.filter(elem => elem.increase) : data.filter(elem => elem.salary >= 1000), term);
+        switch (this.state.filterOption) {
+            case 1:
+                return this.searchEmployees(data.filter(elem => elem.increase), term);
+            case 2:
+                return this.searchEmployees(data.filter(elem => elem.salary >= 1000), term);
+            default:
+                return this.searchEmployees(data, term);
+        }
     }
+
     render() {
         const {data, term} = this.state;
 
@@ -73,16 +82,18 @@ class App extends Component {
             <div className = "app">
                 <AppInfo data={data}/>
                 <div className="search-panel">
-                    <SearchPanel term={term}
-                                 onChangeTerm={(value) => this.onChangeState('term', value)}
-                                 />
-                    <AppFilter onChangeFilterOption={(value) => this.onChangeState('filterOption', value)} optionFilter={this.state.filterOption}/>
-
+                    <SearchPanel    term={term}
+                        onChangeTerm={(value) => this.onChangeState('term', value)}
+                    />
+                    
+                    <AppFilter  onChangeFilterOption={(value) => this.onChangeState('filterOption', value)} 
+                        optionFilter={this.state.filterOption}
+                    />
                 </div>
 
-                <EmployeesList data={this.visibleDataCreate(data, term)}
-                               onDelete={this.deleteItem}
-                               onToggleProp={this.onToggleProp}
+                <EmployeesList  data={this.visibleDataCreate(data, term)}
+                                onDelete={this.deleteItem}
+                                onToggleProp={this.onToggleProp}
                                 />
                 <EmployeesAddForm onSubmit={this.addItem}/>
 
